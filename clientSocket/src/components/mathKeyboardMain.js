@@ -5,14 +5,11 @@ import '../App.css'
 import mathlive from 'mathlive'; // Use the actual package name
 import cortexComputeEngine from '@cortex-js/compute-engine'; // Use the actual package name
 
-import "/home/netobjex/code/special-keyboards/clientSocket/src/App.js"
+import "/home/pc/MY_app/math-Key/clientSocket/src/App.js"
 
-import { Kekule } from 'kekule';
 
 import * as THREE from 'three';
 
-import { KekuleReact, Components } from 'kekule-react';
-import 'kekule/theme/default';       // if Kekule widgets is used in browser, the theme CSS should be imported as well
 import ScientificKeyboard from './wrtitingfunc';
 
 import React, { useEffect, useState, useRef } from "react";
@@ -24,7 +21,7 @@ import katex from "katex";
 
 // import LatKeyboard from "./components/latexKeyboard";
 
-import logoimg from "/home/netobjex/code/special-keyboards/clientSocket/src/UnifyGPT-logo-300x55.png";
+import logoimg from "/home/pc/MY_app/math-Key/clientSocket/src/UnifyGPT-logo-300x55.png";
 
 // const socket = io("https://unitysocketbuild.onrender.com/");
 const socket = io("http://localhost:9000");
@@ -32,10 +29,8 @@ const socket = io("http://localhost:9000");
 
 
 
-Kekule.externalResourceManager.register('three.js', THREE);
 const MathKeyCan = ({ goHome }) => {
 
-  console.log("...............\\||VERSION OF KeKULE LIBRAY||//.....................", Kekule.VERSION);
 
   const [conVal, setConVal] = useState(true);
   const [inputValue, setInputValue] = useState("");
@@ -88,8 +83,8 @@ const MathKeyCan = ({ goHome }) => {
           "http://localhost:5000/convertedValue"
         );
         console.log("Response data:", response.data.result1);
-        // setConVal(response.data.result1); // Assign response data directly to conVal
-        // setReloadCount((prevCount) => prevCount + 1);
+        setConVal(response.data.result1); // Assign response data directly to conVal
+        setReloadCount((prevCount) => prevCount + 1);
       } catch (error) {
         console.error("Error fetching converted value:", error);
       }
@@ -109,6 +104,7 @@ const MathKeyCan = ({ goHome }) => {
 
     socket.on("convertedValue", (convertedValue) => {
       handleConvertedValue(convertedValue);
+      console.log(".....................convertedValue..................", convertedValue);
     });
 
     socket.on("authenticated", () => {
@@ -170,10 +166,11 @@ const MathKeyCan = ({ goHome }) => {
       convertedValue,
     ]);
     setInputLatex(convertedValue);
+    console.log (".............//...........INPUT VALUE........", convertedValue)
 
-    setTimeout(() => {
-      window.location.reload();
-    }, 10000);
+    // setTimeout(() => {
+    //   window.location.reload();
+    // }, 10000);
   };
 
   const mathKeyboardButtonRef = useRef(null);
@@ -235,7 +232,7 @@ const MathKeyCan = ({ goHome }) => {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        "https://webhookforunity.onrender.com/res2",
+        "http://localhost:5000/res2",
         {
           prompt: inputText,
         }
@@ -392,32 +389,8 @@ const MathKeyCan = ({ goHome }) => {
   };
   return (
     <div className='App'>
-      {!authenticated ? (
+      
         <div>
-          <h2>Enter the authentication code:</h2>
-          <input
-            type="text"
-            value={authenticationCode}
-            onChange={(e) => setAuthenticationCode(e.target.value)}
-          />
-          <button
-            className="glow-on-hover"
-            style={{
-              padding: "15px",
-              margin: "10px",
-              minWidth: "32px",
-              backgroundColor: "beige",
-              border: "1px solid black ",
-            }}
-            onClick={() => authenticate(authenticationCode)}
-          >
-            Authenticate
-          </button>
-          {isLoading && <div>Authenticating...</div>}
-        </div>
-      ) : (
-        <div>
-          {authenticated && (
             <div>
               <div class="header">
                 <div className="Header-img-svg">
@@ -481,10 +454,7 @@ const MathKeyCan = ({ goHome }) => {
                 </div>
               </div>
             </div>
-          )}
         </div>
-      )
-      }
     </div >
   );
 };

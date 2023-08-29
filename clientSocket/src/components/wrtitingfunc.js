@@ -17,17 +17,17 @@ import axios from "axios";
 import katex from "katex";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
 import KeyboardHideTwoToneIcon from "@mui/icons-material/KeyboardHideTwoTone";
-import deleteIcon from "/home/netobjex/code/special-keyboards/clientSocket/src/Delete-btn.svg";
+import deleteIcon from "/home/pc/MY_app/math-Key/clientSocket/src/Delete-btn.svg";
 import io from "socket.io-client";
 import QRCode from "react-qr-code";
 import "katex/dist/katex.min.css";
 import { InlineMath, BlockMath } from "react-katex";
 import ReactDOM from "react-dom";
 import { QrReader } from "react-qr-reader";
-import undoIcon from "/home/netobjex/code/special-keyboards/clientSocket/src/noun-undo-btn.svg"; // Import the SVG image
-import redoIcon from "/home/netobjex/code/special-keyboards/clientSocket/src/noun-redo-btn.svg"; // Import
-import convertIcon from "/home/netobjex/code/special-keyboards/clientSocket/src/convertIcon.svg"; // Import
-import sendIcon from "/home/netobjex/code/special-keyboards/clientSocket/src/send-btn.svg"; // Import
+import undoIcon from "/home/pc/MY_app/math-Key/clientSocket/src/noun-undo-btn.svg"; // Import the SVG image
+import redoIcon from "/home/pc/MY_app/math-Key/clientSocket/src/noun-redo-btn.svg"; // Import
+import convertIcon from "/home/pc/MY_app/math-Key/clientSocket/src/convertIcon.svg"; // Import
+import sendIcon from "/home/pc/MY_app/math-Key/clientSocket/src/send-btn.svg"; // Import
 
 import "../index.css";
 import "../App.css";
@@ -178,6 +178,9 @@ const ScientificKeyboard = ({
     };
     editorElement.editor.configuration = configuration;
   };
+
+
+  
   useEffect(() => {
     const editorElement = document.getElementById("editor");
     const resultElement = document.getElementById("result");
@@ -349,8 +352,9 @@ const ScientificKeyboard = ({
       mathNode.style.fontSize = "70px";
       mathNode.style.position = "fixed";
       mathNode.style.zIndex = "9999"; // Higher value to bring it to the front
-      mathNode.style.right = "20%"; // Adjust the vertical position as needed
-      mathNode.style.bottom = "70%"; // Adjust the horizontal position as needed
+      mathNode.style.right = "8%"; // Adjust the vertical position as needed
+      mathNode.style.bottom = "40%"; // Adjust the horizontal position as needed
+      mathNode.style.color = "black"; // Adjust the horizontal position as needed
       mathNode.style.transform = "translate(-50%, -50%)";
 
       if (convertedValue.trim() === "") {
@@ -390,13 +394,13 @@ const ScientificKeyboard = ({
       // location.reload();
     });
 
-    socket.on("authenticationCode", (code) => {
-      // Handle the authentication code received from the server
-      console.log("Received authentication code:", code);
-      // Display the code in your HTML or manipulate it as needed
-      // For example, you could update a <div> element with the code:
-      document.getElementById("codeDisplay").textContent = code;
-    });
+    // socket.on("authenticationCode", (code) => {
+    //   // Handle the authentication code received from the server
+    //   console.log("Received authentication code:", code);
+    //   // Display the code in your HTML or manipulate it as needed
+    //   // For example, you could update a <div> element with the code:
+    //   document.getElementById("codeDisplay").textContent = code;
+    // });
 
     window.addEventListener("resize", () => {
       editorElement.editor.resize();
@@ -746,6 +750,8 @@ const ScientificKeyboard = ({
             <sendIcon style={{ width: "70%", height: "50%" }} />
 
           </button>
+          Response Data: {conVal}
+
 
           
 

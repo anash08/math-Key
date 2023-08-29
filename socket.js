@@ -14,7 +14,15 @@ const PORT = process.env.PORT || 9000;
 const allowedOrigins = [
   "http://192.168.100.61:3000",
   "http://192.168.100.78:3000",
+  "http://192.168.0.125",
+  "https://unitysocketbuild.onrender.com",
+  "http://192.168.1.104:3000",
+  "http://192.168.100.61:3000",
+  "http://192.168.1.8",
+  "http://localhost:3000",
+  "172.20.10.1",
 ];
+
 
 app.use(
   cors({
@@ -28,20 +36,7 @@ app.use(
   })
 );
 
-app.use(
-  cors({
-    origin: [
-      "https://unitysocketbuild.onrender.com",
-      "http://192.168.1.104:3000",
-      "http://192.168.100.61:3000",
-      "192.168.1.102",
-      "http://localhost:3000",
-      "172.20.10.1",
-    ],
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+
 
 // Set up session middleware
 const sessionMiddleware = session({
@@ -66,8 +61,8 @@ function sendWebhook(convertedValue) {
     "............//the converted value from the client....",
     convertedValue
   );
-  const webhookURL = "https://webhookforunity.onrender.com/webhook";
-  //   const webhookURL = "http://localhost:5000/webhook";
+  // const webhookURL = "https://webhookforunity.onrender.com/webhook";
+  const webhookURL = "http://localhost:5000/webhook";
   axios
     .post(webhookURL, { convertedValue })
     .then((response) => {
@@ -93,29 +88,30 @@ io.on("connection", (socket) => {
   socket.session = socket.handshake.session;
 
   // Generate and send the authentication code
-  const authenticationCode = generateCode();
-  socket.emit("authenticationCode", authenticationCode);
+  // const authenticationCode = generateCode();
+  // socket.emit("authenticationCode", authenticationCode);
 
-  socket.on("authenticate", (enteredCode) => {
-    // Check if the entered code matches the authentication code
-    if (enteredCode === authenticationCode.toString()) {
-      socket.emit("authenticated");
-      socket.session.authenticated = true; // Store authentication status in session
-      socket.session.save(); // Save the session
-    } else {
-      socket.emit("invalidCode");
-    }
-  });
+  // socket.on("authenticate", (enteredCode) => {
+  //   // Check if the entered code matches the authentication code
+  //   if (enteredCode === authenticationCode.toString()) {
+  //     socket.emit("authenticated");
+  //     socket.session.authenticated = true; // Store authentication status in session
+  //     socket.session.save(); // Save the session
+  //   } else {
+  //     socket.emit("invalidCode");
+  //   }
+  // });
 
-  socket.on("drawing", (dataURL) => {
-    socket.broadcast.emit("drawing", dataURL);
-  });
+  // socket.on("drawing", (dataURL) => {
+  //   socket.broadcast.emit("drawing", dataURL);
+  // });
 
   socket.on("convertedValue", (convertedValue) => {
     // Check if the user is authenticated
     // if (socket.session.authenticated) {
     socket.broadcast.emit("convertedValue", convertedValue);
-    // sendWebhook(convertedValue);
+    console.log("................CONVERTEDVALUE", convertedValue);
+    sendWebhook(convertedValue);
     // } else {
     // socket.emit('unauthorized');
     // }
